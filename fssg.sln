@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "fssg", "fssg.fsproj", "{3510D177-A3BA-4EBC-AC08-A0EEBB46A31E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3510D177-A3BA-4EBC-AC08-A0EEBB46A31E}.Debug|x86.ActiveCfg = Debug|x86
+		{3510D177-A3BA-4EBC-AC08-A0EEBB46A31E}.Debug|x86.Build.0 = Debug|x86
+		{3510D177-A3BA-4EBC-AC08-A0EEBB46A31E}.Release|x86.ActiveCfg = Release|x86
+		{3510D177-A3BA-4EBC-AC08-A0EEBB46A31E}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = fssg.fsproj
+	EndGlobalSection
+EndGlobal
