@@ -8,6 +8,7 @@ open FSharp.Markdown
 
 open System
 open System.IO
+open System.Collections.Generic
 
 /// Functions that fetch files that should be included.
 module Include =
@@ -29,9 +30,29 @@ module Include =
 
 /// Functions that parse specific metadata elements, such as the page title and date.
 module Metadata =
-    /// Parse the page title.
-    let title() =
-        "    <title>" + "TODO" + "</title>"
+    /// Extracts metadata such as the date and title from the passed Markdown.
+    let extract(markdown : string) =
+        let dict = new Dictionary<string, string>();
+
+        // the first line is a dummy line
+        markdown.Split([|Environment.NewLine|], StringSplitOptions.None)
+            |> ignore
+            
+        // Active pattern to match metadata prefixes
+        let (|Prefix|_|) (p:string) (s:string) =
+            if s.StartsWith(p) then
+                Some(s.Substring(p.Length))
+            else
+                None
+
+        for line in markdown.Split([|Environment.NewLine|], StringSplitOptions.None) do
+            match line with
+            | Prefix "---" rest -> ()
+            | Prefix "title: " rest -> dict.Add("title", rest)
+            | Prefix "date: " rest -> dict.Add("date", rest)
+            | _ -> ()
+
+        dict
 
 /// Functions that are used to parse files (e.g. Markdown, templates).
 module Parse =
@@ -39,10 +60,18 @@ module Parse =
     let markdown() =
         for mdFile in Directory.EnumerateFiles(Environment.CurrentDirectory, "*.md", SearchOption.AllDirectories) do
             let htmlFile = Path.ChangeExtension(mdFile, "html")
-            let html = Markdown.TransformHtml(File.ReadAllText mdFile)
+            let markdown = File.ReadAllText mdFile
 
+            let metadata = Metadata.extract(markdown)
+
+            let html = Markdown.TransformHtml(markdown)
             let page : string =
-                Include.header() + Metadata.title() + Include.body() + Include.navigation() + html + Include.footer()
+                Include.header()
+                + "<title>" + metadata.Item("title") + "</title>"
+                + Include.body()
+                + Include.navigation()
+                + html
+                + Include.footer()
 
             File.WriteAllText(htmlFile, page)
 
