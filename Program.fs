@@ -33,10 +33,6 @@ module Metadata =
     /// Extracts metadata such as the date and title from the passed Markdown.
     let extract(markdown : string) =
         let dict = new Dictionary<string, string>();
-
-        // the first line is a dummy line
-        markdown.Split([|Environment.NewLine|], StringSplitOptions.None)
-            |> ignore
             
         // Active pattern to match metadata prefixes
         let (|Prefix|_|) (p:string) (s:string) =
@@ -45,9 +41,9 @@ module Metadata =
             else
                 None
 
+        // TODO: Make this only loop for the metadata section as this parses metadata in actual content
         for line in markdown.Split([|Environment.NewLine|], StringSplitOptions.None) do
             match line with
-            | Prefix "---" rest -> ()
             | Prefix "title: " rest -> dict.Add("title", rest)
             | Prefix "date: " rest -> dict.Add("date", rest)
             | _ -> ()
