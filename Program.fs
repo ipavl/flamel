@@ -79,7 +79,7 @@ module Parse =
             let html = Markdown.TransformHtml(markdown)
             let page : string =
                 Include.header()
-                + "<title>" + metadata.Item("title") + "</title>"
+                + "<title>" + metadata.Item("title")    // closing </title> should go in body.inc.html
                 + Include.body()
                 + Include.navigation()
                 + html
