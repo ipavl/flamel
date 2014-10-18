@@ -54,6 +54,8 @@ module Metadata =
 module Parse =
     /// Parses and converts Markdown files into HTML files.
     let markdown() =
+        let timer = Diagnostics.Stopwatch.StartNew()
+
         for mdFile in Directory.EnumerateFiles(Environment.CurrentDirectory, "*.md", SearchOption.AllDirectories) do
             let htmlFile = Path.ChangeExtension(mdFile, "html")
             let mdArray = File.ReadAllLines mdFile
@@ -89,9 +91,12 @@ module Parse =
 
             printfn "%s -> %s" mdFile htmlFile
 
+        timer.Stop()
+        printfn "Done in %f ms" timer.Elapsed.TotalMilliseconds
+
 [<EntryPoint>]
 let main argv = 
-    printfn "F# Static Site Generator v0.2"
+    printfn "F# Static Site Generator v0.2.1"
     printfn "Current working directory: %s" Environment.CurrentDirectory 
 
     Parse.markdown()
