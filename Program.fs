@@ -42,7 +42,7 @@ module Metadata =
                 None
 
         // TODO: Make this only loop for the metadata section as this parses metadata in actual content
-        for line in markdown.Split([|Environment.NewLine|], StringSplitOptions.None) do
+        for line in markdown.Split([|Environment.NewLine|], StringSplitOptions.RemoveEmptyEntries) do
             match line with
             | Prefix "title: " rest -> dict.Add("title", rest)
             | Prefix "date: " rest -> dict.Add("date", rest)
@@ -56,9 +56,25 @@ module Parse =
     let markdown() =
         for mdFile in Directory.EnumerateFiles(Environment.CurrentDirectory, "*.md", SearchOption.AllDirectories) do
             let htmlFile = Path.ChangeExtension(mdFile, "html")
-            let markdown = File.ReadAllText mdFile
+            let mdArray = File.ReadAllLines mdFile
 
-            let metadata = Metadata.extract(markdown)
+            // convert the array to a multiline string
+            let lines =
+                let re = Text.RegularExpressions.Regex(@"#(\d+)")
+                [|for line in mdArray ->
+                    re.Replace(line.Replace("{", "{{").Replace("}", "}}").Trim(), "$1", 1)|]
+            let mdString = String.Join("\n", lines)
+
+            let metadata = Metadata.extract(mdString)   // extract the metadata into a dictionary
+
+            // rebuild the Markdown string without the metadata block to parse for the page content
+            let markdown =
+                let sb = new Text.StringBuilder()
+
+                // metadata.Count is the number of items we read, and there are two separator lines
+                for i in metadata.Count + 2 .. mdArray.Length - 1 do
+                    sb.Append(Array.get mdArray i).Append("\n") |> ignore
+                sb.ToString()
 
             let html = Markdown.TransformHtml(markdown)
             let page : string =
@@ -75,8 +91,7 @@ module Parse =
 
 [<EntryPoint>]
 let main argv = 
-    //printfn "%A" argv
-    printfn "F# Static Site Generator v0.1"
+    printfn "F# Static Site Generator v0.2"
     printfn "Current working directory: %s" Environment.CurrentDirectory 
 
     Parse.markdown()
