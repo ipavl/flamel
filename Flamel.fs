@@ -75,7 +75,7 @@ module Parse =
     let markdown(dir : string) =
         let timer = Diagnostics.Stopwatch.StartNew()
 
-        for mdFile in Directory.EnumerateFiles(Environment.CurrentDirectory, "*.md", SearchOption.AllDirectories) do
+        for mdFile in Directory.EnumerateFiles(dir, "*.md", SearchOption.AllDirectories) do
             let htmlFile = Path.ChangeExtension(mdFile, "html")
             let mdArray = File.ReadAllLines mdFile
 
