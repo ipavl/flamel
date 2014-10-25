@@ -1,8 +1,27 @@
-﻿(*
-  Untitled static site generator in F#
-  Author: ipavl <https://github.com/ipavl>
-  Date: October 13, 2014
- *)
+﻿(* Flamel.fs *)
+
+// Author:
+//       ipavl <ipavl@users.sourceforge.net>
+//
+// Copyright (c) 2014 ipavl
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 open FSharp.Markdown
 
@@ -13,20 +32,20 @@ open System.Collections.Generic
 /// Functions that fetch files that should be included.
 module Include =
     /// Reads the header include file.
-    let header() =
-        File.ReadAllText "_includes/header.inc.html"
+    let header(dir : string) =
+        File.ReadAllText (dir + "/_includes/header.inc.html")
 
     /// Reads the body include file.
-    let body() =
-        File.ReadAllText "_includes/body.inc.html"
+    let body(dir : string) =
+        File.ReadAllText (dir + "/_includes/body.inc.html")
 
     /// Reads the navigation include file.
-    let navigation() =
-        File.ReadAllText "_includes/nav.inc.html"
+    let navigation(dir : string) =
+        File.ReadAllText (dir + "/_includes/nav.inc.html")
 
     /// Reads the footer include file.
-    let footer() =
-        File.ReadAllText "_includes/footer.inc.html"
+    let footer(dir : string) =
+        File.ReadAllText (dir + "/_includes/footer.inc.html")
 
 /// Functions that parse specific metadata elements, such as the page title and date.
 module Metadata =
@@ -53,7 +72,7 @@ module Metadata =
 /// Functions that are used to parse files (e.g. Markdown, templates).
 module Parse =
     /// Parses and converts Markdown files into HTML files.
-    let markdown() =
+    let markdown(dir : string) =
         let timer = Diagnostics.Stopwatch.StartNew()
 
         for mdFile in Directory.EnumerateFiles(Environment.CurrentDirectory, "*.md", SearchOption.AllDirectories) do
@@ -80,12 +99,12 @@ module Parse =
 
             let html = Markdown.TransformHtml(markdown)
             let page : string =
-                Include.header()
-                + "<title>" + metadata.Item("title")    // closing </title> should go in body.inc.html
-                + Include.body()
-                + Include.navigation()
+                Include.header(dir)
+                + metadata.Item("title")
+                + Include.body(dir)
+                + Include.navigation(dir)
                 + html
-                + Include.footer()
+                + Include.footer(dir)
 
             File.WriteAllText(htmlFile, page)
 
@@ -96,9 +115,17 @@ module Parse =
 
 [<EntryPoint>]
 let main argv = 
-    printfn "F# Static Site Generator v0.2.1"
-    printfn "Current working directory: %s" Environment.CurrentDirectory 
+    let src = new Text.StringBuilder()
 
-    Parse.markdown()
+    // parse args
+    match argv with
+    | [|dir|] -> src.Append(Environment.CurrentDirectory).Append("/").Append(dir)
+    | _ -> src.Append(Environment.CurrentDirectory)
+    |> ignore
+
+    printfn "Flamel static site generator v0.3"
+    printfn "Using source directory: %s" (src.ToString())
+
+    Parse.markdown(src.ToString())
 
     0 // return an integer exit code
