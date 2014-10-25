@@ -1,0 +1,27 @@
+body {
+  font: sans-serif;
+  text-align: center;
+  border-top: purple solid 3px;
+}
+
+h1 {
+  text-align: center;
+}
+
+nav {
+  text-align: right;
+  padding: 0.01em 1.3em 0 0; /* t r b l */
+}
+
+nav ul {
+  list-style: none;
+}
+
+nav ul a {
+  text-decoration: none;
+}
+
+footer {
+  text-align: center;
+  font-size: 70%;
+}
