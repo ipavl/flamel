@@ -54,3 +54,5 @@ Credits
 -------
 
 This project uses Tomas Petricek's [F# Formatting library](https://github.com/tpetricek/FSharp.Formatting), which is licensed under the Apache License. A copy of the Apache License can be found in the `lib` directory, along with the library DLL.
+
+The sample site provided with this project includes Nicolas Gallagher's [Normalize.css](http://necolas.github.io/normalize.css/).
