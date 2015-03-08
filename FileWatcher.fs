@@ -10,13 +10,14 @@ module FileWatcher
     open System.IO
 
     let setupFileWatcher (path : String) =
-        let fileSystemWatcher = new FileSystemWatcher()
+        let watcher = new FileSystemWatcher()
 
-        fileSystemWatcher.Path <- path
-        fileSystemWatcher.EnableRaisingEvents <- true
-        fileSystemWatcher.IncludeSubdirectories <- true
+        watcher.Path <- path
+        watcher.Filter <- "*.md"
+        watcher.EnableRaisingEvents <- true
+        watcher.IncludeSubdirectories <- true
 
-        fileSystemWatcher.Changed.Add(fun _ -> Parser.Parse.markdown(path))
-        fileSystemWatcher.Created.Add(fun _ -> Parser.Parse.markdown(path))
-        fileSystemWatcher.Deleted.Add(fun _ -> Parser.Parse.markdown(path))
-        fileSystemWatcher.Renamed.Add(fun _ -> Parser.Parse.markdown(path))
+        watcher.Changed.Add(fun _ -> Parser.Parse.markdown(path))
+        watcher.Created.Add(fun _ -> Parser.Parse.markdown(path))
+        watcher.Deleted.Add(fun _ -> Parser.Parse.markdown(path))
+        watcher.Renamed.Add(fun _ -> Parser.Parse.markdown(path))
