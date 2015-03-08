@@ -8,7 +8,7 @@ open System.Runtime.CompilerServices
 [<assembly:AssemblyConfiguration("")>]
 [<assembly:AssemblyCompany("")>]
 [<assembly:AssemblyProduct("")>]
-[<assembly:AssemblyCopyright("Copyright © 2014 ipavl")>]
+[<assembly:AssemblyCopyright("Copyright © 2014-2015 ipavl")>]
 [<assembly:AssemblyTrademark("")>]
 [<assembly:AssemblyVersion("1.0.0.0")>]
 ()
