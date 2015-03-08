@@ -7,18 +7,18 @@ Dependencies
 ------------
 
 * Visual Studio or MonoDevelop with the [F# binding](https://github.com/fsharp/fsharpbinding)
-* Mono/.NET 4.0 or higher
+* .NET/Mono 4.0 or higher
 
 Usage
 -----
 
-Once compiled, run the generator from the command line as follows:
+Once compiled, run the generator from the command line as follows and navigate to `http://localhost:8141` to view the generated site:
 
     flamel.exe [source-directory]
 
 where `source-directory` is a child of the current working directory. If no `source-directory` is specified, the current working directory will be used.
 
-Generated files are currently outputted to the same directory that the Markdown files they were generated from are located. There is (currently) no web server included with Flamel, so you will need to copy the files to one to see your changes, or view them via your browser in their local directories.
+Generated files are currently output to the same directory that the Markdown files they were generated from are located.
 
 Templates
 ---------
