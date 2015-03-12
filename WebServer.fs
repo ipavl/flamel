@@ -11,11 +11,16 @@ module WebServer
     open System.Net
     open System.Text
 
-    let httpServer = "http://localhost:8141/"
+    /// The server address and port to listen on.
+    let listenAddress = "http://localhost:8141/"
 
+    /// The file that the server should return if the server root is specified.
+    let indexFile = "index.html"
+
+    /// Creates a HTTP server asynchronously to serve pages.
     let listener (handler:(HttpListenerRequest -> HttpListenerResponse -> Async<unit>)) =
         let httpListener = new HttpListener()
-        httpListener.Prefixes.Add httpServer
+        httpListener.Prefixes.Add listenAddress
         httpListener.Start()
 
         let task = Async.FromBeginEnd(httpListener.BeginGetContext, httpListener.EndGetContext)
@@ -25,9 +30,11 @@ module WebServer
                 Async.Start(handler context.Request context.Response)
         } |> Async.Start
 
+    /// Handles page routing requests.
     let routeHandler (req : HttpListenerRequest, webRoot : String) =
-        let indexFile = webRoot + "/index.html"
-        let file = Path.Combine(webRoot, Uri(httpServer).MakeRelativeUri(req.Url).OriginalString)
+        let indexFile = webRoot + indexFile
+        let file = Path.Combine(webRoot, Uri(listenAddress).MakeRelativeUri(req.Url).OriginalString)
+
         printfn "Requested: '%s'" file
 
         if (file.Equals(webRoot) && File.Exists(indexFile)) then

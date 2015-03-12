@@ -61,16 +61,17 @@ module Parser
                 let htmlFile = Path.ChangeExtension(mdFile, "html")
                 let mdArray = File.ReadAllLines mdFile
 
-                // convert the array to a multiline string
+                // Convert the array to a multiline string
                 let lines =
                     let re = Text.RegularExpressions.Regex(@"#(\d+)")
                     [|for line in mdArray ->
                         re.Replace(line.Replace("{", "{{").Replace("}", "}}").Trim(), "$1", 1)|]
                 let mdString = String.Join("\n", lines)
 
-                let metadata = Metadata.extract(mdString)   // extract the metadata into a dictionary
+                // Extract the metadata into a dictionary
+                let metadata = Metadata.extract(mdString)
 
-                // rebuild the Markdown string without the metadata block to parse for the page content
+                // Rebuild the Markdown string without the metadata block to parse for the page content
                 let markdown =
                     let sb = new Text.StringBuilder()
 
@@ -79,15 +80,16 @@ module Parser
                         sb.Append(Array.get mdArray i).Append("\n") |> ignore
                     sb.ToString()
 
-                let html = Markdown.TransformHtml(markdown)
+                // Construct the page
                 let page : string =
                     Include.header(dir)
                     + metadata.Item("title")
                     + Include.body(dir)
                     + Include.navigation(dir)
-                    + html
+                    + Markdown.TransformHtml(markdown)
                     + Include.footer(dir)
 
+                // Save the page to file
                 File.WriteAllText(htmlFile, page)
 
                 printfn "%s -> %s" mdFile htmlFile

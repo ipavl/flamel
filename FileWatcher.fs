@@ -9,6 +9,7 @@ module FileWatcher
     open System
     open System.IO
 
+    /// Sets up a FileSystemWatcher object to monitor a directory for changes.
     let setupFileWatcher (path : String) =
         let watcher = new FileSystemWatcher()
 

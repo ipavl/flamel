@@ -25,7 +25,7 @@ Templates
 
 Flamel does not (currently) use any sort of templating language. The output page structure is built using partial regular HTML files in the `_includes` directory of the source folder you specify. The required files are:
 
-* `header.inc.html`: should include an opening `<html>` tag, and opening `<head>` tag, any other elements that need to be placed in the `<head>` section, and then the last line should be an opening `<title>` tag
+* `header.inc.html`: should include an opening `<html>` tag, an opening `<head>` tag, any other elements that need to be placed in the `<head>` section, and then the last line should be an opening `<title>` tag
 * `body.inc.html`: should include a closing `<title>` tag as the first line, any other elements that need to be placed in the `<head>` section that you want after the `<title>`, a closing `<head>` tag, and an opening `<body>` tag
 * `nav.inc.html`: should include whatever navigation you want, or you could leave it as an empty file if you want to put your navigation elsewhere (such as in your footer) without editing the order the pages are constructed in the generator
 * `footer.inc.html`: any page footer content you want should be placed here, as well as closing `<body>` and `<html>` tags
