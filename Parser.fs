@@ -15,19 +15,31 @@ module Parser
     module Include =
         /// Reads the header include file.
         let header(dir : string) =
-            File.ReadAllText (dir + "/_includes/header.inc.html")
+            let headerFile = dir + "/_includes/header.inc.html"
+
+            if File.Exists(headerFile) then File.ReadAllText (headerFile)
+            else ""
 
         /// Reads the body include file.
         let body(dir : string) =
-            File.ReadAllText (dir + "/_includes/body.inc.html")
+            let bodyFile = dir + "/_includes/body.inc.html"
+
+            if File.Exists(bodyFile) then File.ReadAllText (bodyFile)
+            else ""
 
         /// Reads the navigation include file.
         let navigation(dir : string) =
-            File.ReadAllText (dir + "/_includes/nav.inc.html")
+            let navigationFile = dir + "/_includes/nav.inc.html"
+
+            if File.Exists(navigationFile) then File.ReadAllText (navigationFile)
+            else ""
 
         /// Reads the footer include file.
         let footer(dir : string) =
-            File.ReadAllText (dir + "/_includes/footer.inc.html")
+            let footerFile = dir + "/_includes/footer.inc.html"
+
+            if File.Exists(footerFile) then File.ReadAllText (footerFile)
+            else ""
 
     /// Functions that parse specific metadata elements, such as the page title and date.
     module Metadata =

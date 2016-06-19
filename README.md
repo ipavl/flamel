@@ -23,7 +23,7 @@ Generated files are currently output to the same directory that the Markdown fil
 Templates
 ---------
 
-Flamel does not (currently) use any sort of templating language. The output page structure is built using partial regular HTML files in the `_includes` directory of the source folder you specify. The required files are:
+Flamel does not (currently) use any sort of templating language. The output page structure is built using partial regular HTML files in the `_includes` directory of the source folder you specify. The included files are:
 
 * `header.inc.html`: should include an opening `<html>` tag, an opening `<head>` tag, any other elements that need to be placed in the `<head>` section, and then the last line should be an opening `<title>` tag
 * `body.inc.html`: should include a closing `<title>` tag as the first line, any other elements that need to be placed in the `<head>` section that you want after the `<title>`, a closing `<head>` tag, and an opening `<body>` tag
