@@ -66,7 +66,7 @@ module Parser
                     let re = Text.RegularExpressions.Regex(@"#(\d+)")
                     [|for line in mdArray ->
                         re.Replace(line.Replace("{", "{{").Replace("}", "}}").Trim(), "$1", 1)|]
-                let mdString = String.Join("\n", lines)
+                let mdString = String.Join(Environment.NewLine, lines)
 
                 // Extract the metadata into a dictionary
                 let metadata = Metadata.extract(mdString)

@@ -19,7 +19,7 @@ let main argv =
     | _ -> src.Append(Environment.CurrentDirectory)
     |> ignore
 
-    printfn "Flamel static site generator v0.4"
+    printfn "Flamel static site generator v0.4.1"
     printfn "Using source directory: %s" (src.ToString())
 
     // Do an initial parse
