@@ -77,7 +77,7 @@ module Parser
 
                     // metadata.Count is the number of items we read, and there are two separator lines
                     for i in metadata.Count + 2 .. mdArray.Length - 1 do
-                        sb.Append(Array.get mdArray i).Append("\n") |> ignore
+                        sb.Append(Array.get mdArray i).Append(Environment.NewLine) |> ignore
                     sb.ToString()
 
                 let pageTitle =
