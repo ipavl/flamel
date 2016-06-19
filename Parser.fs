@@ -80,10 +80,14 @@ module Parser
                         sb.Append(Array.get mdArray i).Append("\n") |> ignore
                     sb.ToString()
 
+                let pageTitle =
+                    if metadata.ContainsKey("title") then metadata.Item("title")
+                    else ""
+
                 // Construct the page
                 let page : string =
                     Include.header(dir)
-                    + metadata.Item("title")
+                    + pageTitle
                     + Include.body(dir)
                     + Include.navigation(dir)
                     + Markdown.TransformHtml(markdown)
