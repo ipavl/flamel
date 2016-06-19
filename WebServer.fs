@@ -35,13 +35,25 @@ module WebServer
         let homePage = webRoot + "/" + indexFile
         let file = Path.Combine(webRoot, Uri(listenAddress).MakeRelativeUri(req.Url).OriginalString)
 
-        printfn "Requested: '%s'" file
+        printf "Requested: '%s' " file
 
+        // TODO: Cleanup
         if (file.Equals(webRoot) && File.Exists(homePage)) then
             // If the file path is the web root, return the default index file
+            printfn "200"
             File.ReadAllText(homePage)
         else if (File.Exists file) then
             // Return the requested file
+            printfn "200"
             File.ReadAllText(file)
+        else if (Directory.Exists(file) && file.EndsWith("/") && File.Exists(file + indexFile)) then
+            // Directory specified with trailing slash and no specific file, return directory index file
+            printfn "200"
+            File.ReadAllText(file + indexFile)
+        else if (Directory.Exists(file) && not (file.EndsWith("/")) && File.Exists(file + "/" + indexFile)) then
+            // Directory specified with no trailing slash and no specific file, return directory index file
+            printfn "200"
+            File.ReadAllText(file + "/" + indexFile)
         else
+            printfn "404"
             "File not found"
