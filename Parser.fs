@@ -108,7 +108,5 @@ module Parser
                 // Save the page to file
                 File.WriteAllText(htmlFile, page)
 
-                printfn "%s -> %s" mdFile htmlFile
-
             timer.Stop()
             printfn "Done in %f ms" timer.Elapsed.TotalMilliseconds

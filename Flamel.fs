@@ -19,7 +19,7 @@ let main argv =
     | _ -> src.Append(Environment.CurrentDirectory)
     |> ignore
 
-    printfn "Flamel static site generator v0.4.3"
+    printfn "Flamel static site generator v0.4.4"
     printfn "Using source directory: %s" (src.ToString())
 
     // Do an initial parse
@@ -28,9 +28,14 @@ let main argv =
     // Launch a web server to serve the files
     WebServer.listener (fun req resp ->
     async {
-        let data = Encoding.ASCII.GetBytes(WebServer.routeHandler (req, src.ToString()))
+        let response = WebServer.routeHandler (req, src.ToString())
+        let data = Encoding.ASCII.GetBytes(response.Item("body"))
+
+        resp.StatusCode <- int (response.Item("code"))
         resp.OutputStream.Write(data, 0, data.Length)
         resp.OutputStream.Close()
+
+        printfn "%d - %s" resp.StatusCode req.Url.OriginalString
     })
     printfn "Started server at %s" WebServer.listenAddress
 
